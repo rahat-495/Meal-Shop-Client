@@ -25,7 +25,7 @@ const RegisterForm = () => {
         console.log("%cauth, 8", "color: red; font-weight: bold;", data);
     };
     return (
-        <div className="max-w-md rounded-lg shadow-boxed px-5 md:px-8 py-5">
+        <div className="max-w-md h-fit rounded-lg shadow-boxed px-5 md:px-8 py-5 my-5 bg-white">
             <div className="flex gap-5 items-center justify-center mb-5">
                 <Image height={80} width={80} src={logo} alt="Meal Moja" />
                 <div>
@@ -109,7 +109,8 @@ const RegisterForm = () => {
                                     />
                                 </FormControl>
                                 <Button
-                                type="button"
+                                    type="button"
+                                    variant="outline"
                                     className="absolute bottom-0 right-0 rounded-s-none"
                                     onClick={() => setIsHidden(!isHidden)}
                                 >
@@ -126,7 +127,11 @@ const RegisterForm = () => {
                                 <FormLabel>Confirm Password</FormLabel>
                                 <FormControl>
                                     <Input
-                                        type={isHiddenConfirm ? "password" : "text"}
+                                        type={
+                                            isHiddenConfirm
+                                                ? "password"
+                                                : "text"
+                                        }
                                         placeholder="Confrim Password"
                                         {...field}
                                         value={field.value || ""}
@@ -134,7 +139,8 @@ const RegisterForm = () => {
                                     />
                                 </FormControl>
                                 <Button
-                                type="button"
+                                    type="button"
+                                    variant="outline"
                                     className="absolute bottom-0 right-0 rounded-s-none"
                                     onClick={() =>
                                         setIsHiddenConfirm(!isHiddenConfirm)
@@ -163,8 +169,21 @@ const RegisterForm = () => {
                             </FormItem>
                         )}
                     />
-                    <Button className="block mx-auto mt-5 w-20" type="submit">Register</Button>
-                    <p className="text-gray-700 text-center">Already have an account? <Link className="text-emerald-700 font-semibold" href="/login">Login Now!</Link></p>
+                    <Button
+                        className="w-[90%] mt-5 mx-auto block"
+                        type="submit"
+                    >
+                        Register
+                    </Button>
+                    <p className="text-gray-700 text-center">
+                        Already have an account?{" "}
+                        <Link
+                            className="text-emerald-700 font-semibold"
+                            href="/login"
+                        >
+                            Login Now!
+                        </Link>
+                    </p>
                 </form>
             </Form>
         </div>

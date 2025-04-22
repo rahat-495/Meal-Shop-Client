@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Ubuntu, Noto_Sans, Noto_Sans_Mono} from "next/font/google";
 import "./globals.css";
+import Providers from "@/lib/providers";
 
 const ubuntu = Ubuntu({
   variable: "--font-ubuntu",
@@ -29,12 +30,14 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
+    <Providers>
+      <html lang="en">
       <body
         className={`${ubuntu.variable} ${notoSans.variable} ${notoMono.variable} antialiased`}
       >
         {children}
       </body>
     </html>
+    </Providers>
   );
 }
