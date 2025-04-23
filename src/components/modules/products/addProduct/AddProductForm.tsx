@@ -1,5 +1,6 @@
 "use client";
 
+import SectionHeading from "@/components/shared/sectionheading";
 import { Button } from "@/components/ui/button";
 import {
     Form,
@@ -11,28 +12,44 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
-import { FieldValues, SubmitHandler, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { FieldValues, SubmitHandler, useForm } from "react-hook-form";
 import { toast } from "sonner";
 import { productSchema } from "./ProductValidation";
-
-
-
+import { useAddProductsMutation } from "@/redux/featured/produtcs/productsApi";
+import { useAppSelector } from "@/redux/hooks";
+import { selectCurrentUser } from "@/redux/featured/auth/authSlice";
 
 const AddProductForm = () => {
     const form = useForm({
         resolver: zodResolver(productSchema)
     });
+    const [addProducts] = useAddProductsMutation();
+    const user = useAppSelector(selectCurrentUser)
 
-    const onSubmit: SubmitHandler<FieldValues> = (data) => {
-        toast.success("Product submitted!");
-        console.log("Submitted Data:", data);
+    const onSubmit: SubmitHandler<FieldValues> = async(data) => {
+        const toastId = toast.loading("Submitting menu...", {duration: 2000});
+        const {ingredients, ...menu} = data;
+        const ingredientsArray = ingredients.split(', ')
+        const menuData = {
+            ...menu,
+            ingredients: ingredientsArray,
+            createdBy: user!.userId
+        }
+        try {
+            await addProducts(menuData).unwrap();
+            toast.success("Menu added successfully", {id: toastId});
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        } catch (error: any) {
+            toast.error(error?.data?.message || "Failled to ad new menu!", {id: toastId})
+        }
+        console.log("Submitted Data:", menuData);
         form.reset();
     };
 
     return (
-        <div className="max-w-lg h-fit rounded-lg shadow-boxed px-5 md:px-8 py-6 my-8 bg-white">
-            <h2 className="text-xl font-semibold mb-4">Add a New Meal</h2>
+        <div className="max-w-lg mx-auto rounded-lg shadow-boxed px-5 md:px-8 py-6 my-8 bg-white">
+            <SectionHeading title="Add a New Meal"/>
             <Form {...form}>
                 <form
                     onSubmit={form.handleSubmit(onSubmit)}
@@ -43,10 +60,10 @@ const AddProductForm = () => {
                         name="title"
                         render={({ field }) => (
                             <FormItem>
-                                <FormLabel>Name</FormLabel>
+                                <FormLabel>Menu</FormLabel>
                                 <FormControl>
                                     <Input
-                                        placeholder="Full Name"
+                                        placeholder="Menu title"
                                         {...field}
                                         value={field.value || ""}
                                     />
@@ -65,6 +82,7 @@ const AddProductForm = () => {
                                     <Textarea
                                         placeholder="Describe the meal..."
                                         {...field}
+                                        value={field.value || ""}
                                     />
                                 </FormControl>
                                 <FormMessage />
@@ -81,6 +99,7 @@ const AddProductForm = () => {
                                     <Input
                                         placeholder="https://example.com/image.jpg"
                                         {...field}
+                                        value={field.value || ""}
                                     />
                                 </FormControl>
                                 <FormMessage />
@@ -99,6 +118,8 @@ const AddProductForm = () => {
                                         step="0.01"
                                         placeholder="Price"
                                         {...field}
+                                        onChange={(e) => field.onChange(e.target.valueAsNumber)}
+                                        value={field?.value || ""}
                                     />
                                 </FormControl>
                                 <FormMessage />
@@ -115,6 +136,7 @@ const AddProductForm = () => {
                                     <Input
                                         placeholder="e.g. LowCarb, Vegan"
                                         {...field}
+                                        value={field.value || ""}
                                     />
                                 </FormControl>
                                 <FormMessage />
@@ -133,6 +155,7 @@ const AddProductForm = () => {
                                     <Input
                                         placeholder="e.g. Chicken, Lettuce, Tomato"
                                         {...field}
+                                        value={field.value || ""}
                                     />
                                 </FormControl>
                                 <FormMessage />
@@ -144,16 +167,21 @@ const AddProductForm = () => {
                         name="available"
                         render={({ field }) => (
                             <FormItem>
-                                <FormLabel>Available?</FormLabel>
-                                <FormControl>
-                                    <Input
-                                        type="checkbox"
-                                        checked={field.value}
-                                        onChange={(e) =>
-                                            field.onChange(e.target.checked)
-                                        }
-                                    />
-                                </FormControl>
+                                <div className="flex items-center gap-3">
+                                    <FormControl>
+                                        <Input
+                                            type="checkbox"
+                                            className="w-4"
+                                            checked={field?.value || false}
+                                            onChange={(e) =>
+                                                field.onChange(e.target.checked)
+                                            }
+                                        />
+                                    </FormControl>
+                                    <FormLabel>
+                                        Make this meal available
+                                    </FormLabel>
+                                </div>
                                 <FormMessage />
                             </FormItem>
                         )}
