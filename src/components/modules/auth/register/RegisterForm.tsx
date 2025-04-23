@@ -8,26 +8,78 @@ import {
     FormField,
     FormItem,
     FormLabel,
+    FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
+import { useRegisterUserMutation } from "@/redux/featured/auth/authApi";
+import { zodResolver } from "@hookform/resolvers/zod";
 import { Eye, EyeOff } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import { useState } from "react";
 import { FieldValues, SubmitHandler, useForm } from "react-hook-form";
+import { toast } from "sonner";
+import { registerSchema } from "./RegisterValidation";
+import { useAppDispatch } from "@/redux/hooks";
+import { setUser, TUser } from "@/redux/featured/auth/authSlice";
+import { verifyToken } from "@/lib/utils/verifyToken";
+import { useRouter } from "next/navigation";
 
 const RegisterForm = () => {
-    const form = useForm();
+    const form = useForm({
+        resolver: zodResolver(registerSchema),
+    });
+    const router = useRouter()
     const [isHidden, setIsHidden] = useState(true);
     const [isHiddenConfirm, setIsHiddenConfirm] = useState(true);
+    const [registerUser] = useRegisterUserMutation();
+    const dispatch = useAppDispatch();
 
-    const onSubmit: SubmitHandler<FieldValues> = (data) => {
-        console.log("%cauth, 8", "color: red; font-weight: bold;", data);
+    const password = form.watch("password");
+    const confirmPassword = form.watch("confirmPassword");
+
+    const onSubmit: SubmitHandler<FieldValues> = async (data) => {
+        const toastId = toast.loading("Signing Up...", { duration: 2000 });
+
+        const formData = new FormData();
+        const { image, ...newData } = data;
+
+        formData.append("data", JSON.stringify(newData));
+        formData.append("file", image);
+
+        try {
+            const res = await registerUser(formData).unwrap();
+            toast.success("Signup Successful!", { id: toastId });
+            const user = verifyToken(res.data.accessToken) as TUser;
+            if (res.success) {
+                dispatch(
+                    setUser({
+                        user: user,
+                        token: res.data.accessToken,
+                    })
+                );
+                router.push("/preferences");
+            }
+            form.reset();
+
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        } catch (error: any) {
+            toast.error(error?.data?.message || "Failed to sign up!", {
+                id: toastId,
+            });
+        }
     };
     return (
         <div className="max-w-md h-fit rounded-lg shadow-boxed px-5 md:px-8 py-5 my-5 bg-white">
             <div className="flex gap-5 items-center justify-center mb-5">
-                <Image height={80} width={80} src={logo} alt="Meal Moja" />
+                <Image
+                    height={80}
+                    width={80}
+                    src={logo}
+                    alt="Meal Moja"
+                    priority={true}
+                    quality={70}
+                />
                 <div>
                     <p className="text-2xl font-semibold font-ubuntu">
                         Register Now!
@@ -44,7 +96,7 @@ const RegisterForm = () => {
                 >
                     <FormField
                         control={form.control}
-                        name="username"
+                        name="name"
                         render={({ field }) => (
                             <FormItem>
                                 <FormLabel>Name</FormLabel>
@@ -53,9 +105,9 @@ const RegisterForm = () => {
                                         placeholder="Full Name"
                                         {...field}
                                         value={field.value || ""}
-                                        required
                                     />
                                 </FormControl>
+                                <FormMessage />
                             </FormItem>
                         )}
                     />
@@ -70,15 +122,15 @@ const RegisterForm = () => {
                                         placeholder="Email Address"
                                         {...field}
                                         value={field.value || ""}
-                                        required
                                     />
                                 </FormControl>
+                                <FormMessage />
                             </FormItem>
                         )}
                     />
                     <FormField
                         control={form.control}
-                        name="text"
+                        name="phoneNumber"
                         render={({ field }) => (
                             <FormItem>
                                 <FormLabel>Phone Number</FormLabel>
@@ -87,9 +139,9 @@ const RegisterForm = () => {
                                         placeholder="Email Address"
                                         {...field}
                                         value={field.value || ""}
-                                        required
                                     />
                                 </FormControl>
+                                <FormMessage />
                             </FormItem>
                         )}
                     />
@@ -105,13 +157,13 @@ const RegisterForm = () => {
                                         placeholder="Enter Password"
                                         {...field}
                                         value={field.value || ""}
-                                        required
                                     />
                                 </FormControl>
+                                <FormMessage />
                                 <Button
                                     type="button"
-                                    variant="outline"
-                                    className="absolute bottom-0 right-0 rounded-s-none"
+                                    variant="link"
+                                    className="absolute cursor-pointer right-0 top-1 translate-y-1/2"
                                     onClick={() => setIsHidden(!isHidden)}
                                 >
                                     {isHidden ? <EyeOff /> : <Eye />}
@@ -121,7 +173,7 @@ const RegisterForm = () => {
                     />
                     <FormField
                         control={form.control}
-                        name="confirm-password"
+                        name="confirmPassword"
                         render={({ field }) => (
                             <FormItem className="relative">
                                 <FormLabel>Confirm Password</FormLabel>
@@ -135,19 +187,26 @@ const RegisterForm = () => {
                                         placeholder="Confrim Password"
                                         {...field}
                                         value={field.value || ""}
-                                        required
                                     />
                                 </FormControl>
                                 <Button
                                     type="button"
-                                    variant="outline"
-                                    className="absolute bottom-0 right-0 rounded-s-none"
+                                    variant="link"
+                                    className="absolute cursor-pointer right-0 top-1 translate-y-1/2"
                                     onClick={() =>
                                         setIsHiddenConfirm(!isHiddenConfirm)
                                     }
                                 >
                                     {isHiddenConfirm ? <EyeOff /> : <Eye />}
                                 </Button>
+                                {confirmPassword &&
+                                password !== confirmPassword ? (
+                                    <FormMessage>
+                                        Password did not match
+                                    </FormMessage>
+                                ) : (
+                                    <FormMessage />
+                                )}
                             </FormItem>
                         )}
                     />
@@ -162,14 +221,18 @@ const RegisterForm = () => {
                                         type="file"
                                         placeholder="Upload Image"
                                         {...field}
-                                        value={field.value || ""}
-                                        required
+                                        onChange={(e) =>
+                                            field.onChange(e.target.files?.[0])
+                                        }
+                                        value={field.value?.fileName}
                                     />
                                 </FormControl>
+                                <FormMessage />
                             </FormItem>
                         )}
                     />
                     <Button
+                        disabled={password !== confirmPassword}
                         className="w-[90%] mt-5 mx-auto block"
                         type="submit"
                     >

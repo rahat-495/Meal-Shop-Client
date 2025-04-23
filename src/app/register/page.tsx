@@ -1,4 +1,4 @@
-import RegisterForm from "@/components/modules/auth/RegisterForm";
+import RegisterForm from "@/components/modules/auth/register/RegisterForm";
 import registerImg from '@/assets/auth/register.svg';
 import Image from "next/image";
 

@@ -10,18 +10,48 @@ import {
     FormLabel,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
+import { verifyToken } from "@/lib/utils/verifyToken";
+import { useLoginMutation } from "@/redux/featured/auth/authApi";
+import { setUser, TUser } from "@/redux/featured/auth/authSlice";
+import { useAppDispatch } from "@/redux/hooks";
 import { Eye, EyeOff } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { FieldValues, SubmitHandler, useForm } from "react-hook-form";
+import { toast } from "sonner";
 
 const LoginForm = () => {
     const form = useForm();
     const [isHidden, setIsHidden] = useState(true);
+    const [login] = useLoginMutation();
+    const dispatch = useAppDispatch();
+    const router = useRouter();
 
-    const onSubmit: SubmitHandler<FieldValues> = (data) => {
-        console.log("%cauth, 8", "color: red; font-weight: bold;", data);
+    const onSubmit: SubmitHandler<FieldValues> = async (data) => {
+        const toastId = toast.loading("Signing Up...", { duration: 2000 });
+
+        try {
+            const res = await login(data).unwrap();
+            toast.success("Login Successful!", { id: toastId });
+            const user = verifyToken(res.data.accessToken) as TUser;
+            if (res.success) {
+                dispatch(
+                    setUser({
+                        user: user,
+                        token: res.data.accessToken,
+                    })
+                );
+                form.reset();
+                router.push('/')
+            }
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        } catch (error: any) {
+            toast.error(error?.data?.message || "Failed to login!", {
+                id: toastId,
+            });
+        }
     };
     return (
         <div className="max-w-md h-fit rounded-lg shadow-boxed px-5 md:px-8 py-5 mb-5 mt-20 bg-white">
@@ -31,6 +61,8 @@ const LoginForm = () => {
                     width={120}
                     src={logo}
                     alt="Meal Moja"
+                    priority={true}
+                    quality={70}
                     className="border-4 rounded-full mb-5 -mt-20"
                 />
             </div>
@@ -41,13 +73,13 @@ const LoginForm = () => {
                 >
                     <FormField
                         control={form.control}
-                        name="email"
+                        name="loginCredentials"
                         render={({ field }) => (
                             <FormItem>
-                                <FormLabel>Email</FormLabel>
+                                <FormLabel>Email or Phone</FormLabel>
                                 <FormControl>
                                     <Input
-                                        placeholder="Email Address"
+                                        placeholder="Email or phone number"
                                         {...field}
                                         value={field.value || ""}
                                         required

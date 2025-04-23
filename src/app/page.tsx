@@ -1,11 +1,12 @@
-import { Button } from "@/components/ui/button";
+import MealBoxFaq from "@/components/modules/home/faq/Faq";
+import Banner from "@/components/modules/home/hero/Banner";
 
 const HomePage = () => {
 
     return (
-        <div className='text-4xl mx-auto my-20 max-w-6xl'>
-            <p className="font-ubuntu">Home page here</p>
-            <Button>Button Here</Button>
+        <div className=''>
+            <Banner/>
+            <MealBoxFaq/>
         </div>
     );
 };
