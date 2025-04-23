@@ -19,37 +19,47 @@ import { productSchema } from "./ProductValidation";
 import { useAddProductsMutation } from "@/redux/featured/produtcs/productsApi";
 import { useAppSelector } from "@/redux/hooks";
 import { selectCurrentUser } from "@/redux/featured/auth/authSlice";
+import { dietaryOptions } from "./constants";
+import {
+    Select,
+    SelectContent,
+    SelectItem,
+    SelectTrigger,
+    SelectValue,
+} from "@/components/ui/select";
 
 const AddProductForm = () => {
     const form = useForm({
-        resolver: zodResolver(productSchema)
+        resolver: zodResolver(productSchema),
     });
     const [addProducts] = useAddProductsMutation();
-    const user = useAppSelector(selectCurrentUser)
+    const user = useAppSelector(selectCurrentUser);
 
-    const onSubmit: SubmitHandler<FieldValues> = async(data) => {
-        const toastId = toast.loading("Submitting menu...", {duration: 2000});
-        const {ingredients, ...menu} = data;
-        const ingredientsArray = ingredients.split(', ')
+    const onSubmit: SubmitHandler<FieldValues> = async (data) => {
+        const toastId = toast.loading("Submitting menu...", { duration: 2000 });
+        const { ingredients, ...menu } = data;
+        const ingredientsArray = ingredients.split(", ");
         const menuData = {
             ...menu,
             ingredients: ingredientsArray,
-            createdBy: user!.userId
-        }
+            createdBy: user!.userId,
+        };
         try {
             await addProducts(menuData).unwrap();
-            toast.success("Menu added successfully", {id: toastId});
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+            toast.success("Menu added successfully", { id: toastId });
+            form.reset();
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
         } catch (error: any) {
-            toast.error(error?.data?.message || "Failled to ad new menu!", {id: toastId})
+            toast.error(error?.data?.message || "Failled to ad new menu!", {
+                id: toastId,
+            });
         }
         console.log("Submitted Data:", menuData);
-        form.reset();
     };
 
     return (
         <div className="max-w-lg mx-auto rounded-lg shadow-boxed px-5 md:px-8 py-6 my-8 bg-white">
-            <SectionHeading title="Add a New Meal"/>
+            <SectionHeading title="Add a New Meal" />
             <Form {...form}>
                 <form
                     onSubmit={form.handleSubmit(onSubmit)}
@@ -118,7 +128,11 @@ const AddProductForm = () => {
                                         step="0.01"
                                         placeholder="Price"
                                         {...field}
-                                        onChange={(e) => field.onChange(e.target.valueAsNumber)}
+                                        onChange={(e) =>
+                                            field.onChange(
+                                                e.target.valueAsNumber
+                                            )
+                                        }
                                         value={field?.value || ""}
                                     />
                                 </FormControl>
@@ -126,7 +140,7 @@ const AddProductForm = () => {
                             </FormItem>
                         )}
                     />
-                    <FormField
+                    {/* <FormField
                         control={form.control}
                         name="dietary"
                         render={({ field }) => (
@@ -138,6 +152,38 @@ const AddProductForm = () => {
                                         {...field}
                                         value={field.value || ""}
                                     />
+                                </FormControl>
+                                <FormMessage />
+                            </FormItem>
+                        )}
+                    /> */}
+                    <FormField
+                        control={form.control}
+                        name="dietary"
+                        render={({ field }) => (
+                            <FormItem>
+                                <FormLabel>Dietary Tag</FormLabel>
+                                <FormControl>
+                                    <Select
+                                        onValueChange={field.onChange}
+                                        value={field.value}
+                                    >
+                                        <FormControl>
+                                            <SelectTrigger className="w-full">
+                                                <SelectValue placeholder="Select a dietary tag" />
+                                            </SelectTrigger>
+                                        </FormControl>
+                                        <SelectContent>
+                                            {dietaryOptions.map((option) => (
+                                                <SelectItem
+                                                    key={option}
+                                                    value={option}
+                                                >
+                                                    {option}
+                                                </SelectItem>
+                                            ))}
+                                        </SelectContent>
+                                    </Select>
                                 </FormControl>
                                 <FormMessage />
                             </FormItem>
@@ -187,7 +233,7 @@ const AddProductForm = () => {
                         )}
                     />
                     <Button className="w-full" type="submit">
-                        Submit Product
+                        Add To Menu
                     </Button>
                 </form>
             </Form>
