@@ -15,11 +15,12 @@ import { Textarea } from "@/components/ui/textarea";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { FieldValues, SubmitHandler, useForm } from "react-hook-form";
 import { toast } from "sonner";
-import { productSchema } from "./ProductValidation";
-import { useAddProductsMutation } from "@/redux/featured/produtcs/productsApi";
-import { useAppSelector } from "@/redux/hooks";
-import { selectCurrentUser } from "@/redux/featured/auth/authSlice";
-import { dietaryOptions } from "./constants";
+import { productSchema } from "@/components/modules/products/addProduct/ProductValidation";
+import {
+    useGetProductByIdQuery,
+    useUpdateProductsMutation,
+} from "@/redux/featured/produtcs/productsApi";
+import { dietaryOptions } from "@/components/modules/products/addProduct/constants";
 import {
     Select,
     SelectContent,
@@ -27,39 +28,62 @@ import {
     SelectTrigger,
     SelectValue,
 } from "@/components/ui/select";
+import { useParams } from "next/navigation";
+import LoadingSpinner from "@/components/shared/loadingspinner";
+import { useEffect } from "react";
 
-const AddProductForm = () => {
+const UpdateProductForm = () => {
+    const { productId } = useParams();
+    const { data, isLoading } = useGetProductByIdQuery(productId);
+    const [updateProduct] = useUpdateProductsMutation();
+    const currentProduct = data?.data;
+
     const form = useForm({
         resolver: zodResolver(productSchema),
     });
-    const [addProducts] = useAddProductsMutation();
-    const user = useAppSelector(selectCurrentUser);
+
+    useEffect(() => {
+        if (currentProduct) {
+            console.log("Resetting with dietary:", currentProduct.dietary);
+            form.reset({
+                ...currentProduct,
+                dietary: currentProduct.dietary,
+                ingredients: currentProduct.ingredients.join(", "),
+            });
+        }
+    }, [currentProduct, form]);
+    if (isLoading) {
+        return <LoadingSpinner />;
+    }
+    console.log(currentProduct);
 
     const onSubmit: SubmitHandler<FieldValues> = async (data) => {
+        console.log(data);
         const toastId = toast.loading("Submitting menu...", { duration: 2000 });
         const { ingredients, ...menu } = data;
         const ingredientsArray = ingredients.split(", ");
         const menuData = {
             ...menu,
             ingredients: ingredientsArray,
-            createdBy: user!.userId,
         };
+
         try {
-            await addProducts(menuData).unwrap();
-            toast.success("Menu added successfully", { id: toastId });
-            form.reset();
+            await updateProduct({
+                id: currentProduct?._id,
+                data: menuData,
+            }).unwrap();
+            toast.success("Menu updated successfully!", { id: toastId });
             // eslint-disable-next-line @typescript-eslint/no-explicit-any
         } catch (error: any) {
-            toast.error(error?.data?.message || "Failled to ad new menu!", {
+            toast.success(error?.data?.message || "Failed to update menu!", {
                 id: toastId,
             });
         }
-        console.log("Submitted Data:", menuData);
     };
 
     return (
         <div className="max-w-lg mx-auto rounded-lg shadow-boxed px-5 md:px-8 py-6 my-8 bg-white">
-            <SectionHeading title="Add a New Meal" />
+            <SectionHeading title="Customize a Meal Info" />
             <Form {...form}>
                 <form
                     onSubmit={form.handleSubmit(onSubmit)}
@@ -140,38 +164,39 @@ const AddProductForm = () => {
                             </FormItem>
                         )}
                     />
+
                     <FormField
                         control={form.control}
                         name="dietary"
                         render={({ field }) => (
                             <FormItem>
                                 <FormLabel>Dietary Tag</FormLabel>
-                                <FormControl>
-                                    <Select
-                                        onValueChange={field.onChange}
-                                        value={field.value}
-                                    >
-                                        <FormControl>
-                                            <SelectTrigger className="w-full">
-                                                <SelectValue placeholder="Select a dietary tag" />
-                                            </SelectTrigger>
-                                        </FormControl>
-                                        <SelectContent>
-                                            {dietaryOptions.map((option) => (
-                                                <SelectItem
-                                                    key={option}
-                                                    value={option}
-                                                >
-                                                    {option}
-                                                </SelectItem>
-                                            ))}
-                                        </SelectContent>
-                                    </Select>
-                                </FormControl>
+                                <Select
+                                    onValueChange={field.onChange}
+
+                                    // value={field.value}
+                                >
+                                    <SelectTrigger className="w-full">
+                                        <SelectValue
+                                            placeholder={field.value}
+                                        />
+                                    </SelectTrigger>
+                                    <SelectContent>
+                                        {dietaryOptions.map((option) => (
+                                            <SelectItem
+                                                key={option}
+                                                value={option}
+                                            >
+                                                {option}
+                                            </SelectItem>
+                                        ))}
+                                    </SelectContent>
+                                </Select>
                                 <FormMessage />
                             </FormItem>
                         )}
                     />
+
                     <FormField
                         control={form.control}
                         name="ingredients"
@@ -191,6 +216,23 @@ const AddProductForm = () => {
                             </FormItem>
                         )}
                     />
+                    {/* <FormField
+                        control={form.control}
+                        name="message"
+                        render={({ field }) => (
+                            <FormItem>
+                                <FormLabel>Message to chef</FormLabel>
+                                <FormControl>
+                                    <Textarea
+                                        placeholder="Describe your requirements..."
+                                        {...field}
+                                        value={field.value || ""}
+                                    />
+                                </FormControl>
+                                <FormMessage />
+                            </FormItem>
+                        )}
+                    /> */}
                     <FormField
                         control={form.control}
                         name="available"
@@ -201,7 +243,7 @@ const AddProductForm = () => {
                                         <Input
                                             type="checkbox"
                                             className="w-4"
-                                            checked={field?.value || false}
+                                            checked={field?.value ?? false}
                                             onChange={(e) =>
                                                 field.onChange(e.target.checked)
                                             }
@@ -216,7 +258,7 @@ const AddProductForm = () => {
                         )}
                     />
                     <Button className="w-full" type="submit">
-                        Add To Menu
+                        Update Menu
                     </Button>
                 </form>
             </Form>
@@ -224,4 +266,4 @@ const AddProductForm = () => {
     );
 };
 
-export default AddProductForm;
+export default UpdateProductForm;

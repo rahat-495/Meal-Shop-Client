@@ -20,12 +20,7 @@ export const productSchema = z.object({
         .min(0.01, 'Price must be at least $0.01!')
         .max(1000, 'Price cannot exceed $1000!'),
 
-    dietary: z
-        .string({ required_error: 'Dietary tag is required!' })
-        .refine(
-            (val) => !val || val.length >= 2,
-            'Dietary tag must be at least 2 characters long if provided!'
-        ),
+    dietary: z.string({required_error: "Select a tag"}).min(2, "Select a tag"),
 
     ingredients: z
         .string({ required_error: 'Ingredients are required!' })

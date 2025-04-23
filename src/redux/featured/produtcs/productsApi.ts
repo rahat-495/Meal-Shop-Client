@@ -9,10 +9,22 @@ const productsApi = baseApi.injectEndpoints({
                 body: data
             })
         }),
+        updateProducts: builder.mutation({
+            query: ({id,data}) => ({
+                url: `/meals/update-meal/${id}`,
+                method: "PATCH",
+                body: data
+            })
+        }),
+        getProductById: builder.query({
+            query: (id)=> `/meals/${id}`
+        })
     })
 })
 
 
 export const {
-    useAddProductsMutation
+    useAddProductsMutation,
+    useGetProductByIdQuery,
+    useUpdateProductsMutation
 } = productsApi;

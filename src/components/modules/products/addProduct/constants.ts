@@ -13,4 +13,4 @@ export const dietaryOptions = [
     "Pescatarian",
     "SugarFree",
     "Organic",
-]
+] 
