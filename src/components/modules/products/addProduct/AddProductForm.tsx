@@ -44,10 +44,18 @@ const AddProductForm = () => {
             ingredients: ingredientsArray,
             createdBy: user!.userId,
         };
+        // Resetting form
+        const emptyValues = Object.fromEntries(
+            Object.keys(data).map((key) => [key, ""])
+        );
         try {
             await addProducts(menuData).unwrap();
             toast.success("Menu added successfully", { id: toastId });
-            form.reset();
+
+            // setting a reset
+            form.reset(emptyValues);
+
+            form.reset({});
             // eslint-disable-next-line @typescript-eslint/no-explicit-any
         } catch (error: any) {
             toast.error(error?.data?.message || "Failled to ad new menu!", {
