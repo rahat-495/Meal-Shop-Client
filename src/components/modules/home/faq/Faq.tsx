@@ -24,7 +24,7 @@ const MealBoxFaq = () => {
                 <div className="mx-auto flex max-w-3xl flex-col text-left md:text-center">
                     <SectionHeading
                         title="Frequently Asked Questions"
-                        subtitle="Answers to your common Meal Box questions"
+                        subtitle="Answers to your common Meal Moja user questions"
                     />
                 </div>
 
@@ -69,7 +69,7 @@ const MealBoxFaq = () => {
                     </h3>
                     <p className="mb-8 max-w-3xl text-muted-foreground lg:text-lg">
                         Our support team is always ready to assist you with your
-                        Meal Box experience.
+                        Meal Moja user experience.
                     </p>
                     <div className="flex w-full flex-col justify-center gap-2 sm:flex-row">
                         <Button className="w-full sm:w-auto" asChild>
