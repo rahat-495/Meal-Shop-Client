@@ -7,10 +7,7 @@ const NotFound = () => {
     return (
         <div className="relative">
             <LottieRender animationData={notFound} className="h-screen" />
-            <Link
-                href="/"
-                className="fixed bottom-16 left-1/2 -translate-x-1/2"
-            >
+            <Link href="/" className="fixed bottom-16 left-1/2 -translate-x-1/2">
                 <Button className="cursor-pointer">Back to Homepage</Button>
             </Link>
         </div>
