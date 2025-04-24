@@ -233,7 +233,7 @@ const RegisterForm = () => {
                     />
                     <Button
                         disabled={password !== confirmPassword}
-                        className="w-[90%] mt-5 mx-auto block"
+                        className="mt-5 mx-auto block"
                         type="submit"
                     >
                         Register

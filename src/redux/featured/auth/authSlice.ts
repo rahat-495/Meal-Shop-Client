@@ -5,6 +5,7 @@ export type TUser = {
     email: string;
     role: string;
     phoneNumber: string;
+    userId: string;
     iat: number;
     exp: number
 }
@@ -39,8 +40,8 @@ const authSlice = createSlice({
 export const { setUser, logout } = authSlice.actions;
 
 // Export Selector
-export const selectCurrentToken = (state: RootState) => state.auth.token;
-export const selectCurrentUser = (state: RootState) => state.auth.user
+export const selectCurrentToken = (state: RootState) => state.combinedPersist.auth.token;
+export const selectCurrentUser = (state: RootState) => state.combinedPersist.auth.user
 
 // Exporting default reducers
 export default authSlice.reducer;

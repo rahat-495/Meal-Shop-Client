@@ -37,7 +37,7 @@ const Banner = () => {
                     </div>
 
                     {/* Image */}
-                    <div className="w-full h-96 border-4 border-white rounded-md relative">
+                    <div className="w-full h-96 border-4 border-white rounded-lg relative">
                         <Image
                             src={mealInBox}
                             alt="Delicious meals arranged in boxes"
