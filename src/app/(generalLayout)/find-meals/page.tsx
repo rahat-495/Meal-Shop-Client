@@ -1,7 +1,10 @@
+import SectionHeading from "@/components/shared/sectionheading";
+
 const FindMealsPage = () => {
   return (
     <div>
-      <h1>Find Meals</h1>
+      <SectionHeading title="Find Your Flavor" subtitle="Discover meals that match your cravings.
+Fresh picks, every time you search."></SectionHeading>
     </div>
   );
 };
