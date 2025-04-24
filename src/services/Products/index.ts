@@ -1,8 +1,10 @@
+
 /* eslint-disable @typescript-eslint/no-explicit-any */
 "use server"
 
 // get all products
 export const getAllProducts = async (page?: string, limit?: string) => {
+
     try {
         const res = await fetch(
             `${process.env.NEXT_PUBLIC_BASE_API}/meals?limit=${limit}&page=${page}`,

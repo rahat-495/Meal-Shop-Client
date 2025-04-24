@@ -11,6 +11,7 @@ const MealsPage = async ({
     const { page } = await searchParams;
     // Get all meals
     const res = await getAllProducts(page);
+    console.log(res);
 
     const products: TMeal[] = res?.data?.result;
 

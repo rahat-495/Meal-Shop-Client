@@ -30,7 +30,7 @@ const LoginForm = () => {
     const router = useRouter();
 
     const onSubmit: SubmitHandler<FieldValues> = async (data) => {
-        const toastId = toast.loading("Signing Up...", { duration: 2000 });
+        const toastId = toast.loading("Loging in...", { duration: 2000 });
 
         try {
             const res = await login(data).unwrap();
