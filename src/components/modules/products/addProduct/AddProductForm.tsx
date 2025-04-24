@@ -62,7 +62,6 @@ const AddProductForm = () => {
                 id: toastId,
             });
         }
-        console.log("Submitted Data:", menuData);
     };
 
     return (
