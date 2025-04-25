@@ -31,7 +31,7 @@ const Pagination = ({ totalPage, page }: PaginationProps) => {
     };
 
     // ekpage or data match na korle show hobe na
-    if (totalPage <= 1) return null;
+    // if (totalPage <= 1) return null;
     return (
         <div className="flex items-center gap-2 my-5 md:my-8">
             <Button
