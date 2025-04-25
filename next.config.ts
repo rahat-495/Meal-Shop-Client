@@ -7,9 +7,13 @@ const nextConfig: NextConfig = {
       {
         hostname: "**",
         protocol: "https"
-      }
-    ]
-  }
+      },
+      {
+        protocol: "https",
+        hostname: "**",
+      },
+    ],
+  },
 };
 
 export default nextConfig;
