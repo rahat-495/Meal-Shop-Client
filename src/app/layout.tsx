@@ -3,8 +3,6 @@ import { Ubuntu, Noto_Sans, Noto_Sans_Mono } from "next/font/google";
 import "./globals.css";
 import Providers from "@/lib/providers";
 import { Toaster } from "sonner";
-import Navbar from "@/components/shared/Navbar";
-import FooterSection from "@/components/shared/footersection";
 
 const ubuntu = Ubuntu({
   variable: "--font-ubuntu",
@@ -38,11 +36,7 @@ export default function RootLayout({
       <body
         className={`${ubuntu.variable} ${notoSans.variable} ${notoMono.variable} antialiased`}
       >
-        <Providers>
-          <Navbar />
-          {children}
-          <FooterSection />
-        </Providers>
+        <Providers>{children}</Providers>
         <Toaster />
       </body>
     </html>
