@@ -6,7 +6,7 @@ const GeneralLayout = ({ children }: { children: ReactNode }) => {
   return (
     <div>
       <Navbar></Navbar>
-      <div className="min-h-screen">{children}</div>
+      <div className="min-h-[80vh]">{children}</div>
       <FooterSection></FooterSection>
       <div></div>
     </div>
