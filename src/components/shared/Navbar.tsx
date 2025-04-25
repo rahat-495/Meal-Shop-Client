@@ -101,10 +101,7 @@ const Navbar = () => {
                 className="flex items-center gap-2"
               >
                 <Image
-                  src={
-                    user?.image ||
-                    "https://media.istockphoto.com/id/1337144146/vector/default-avatar-profile-icon-vector.jpg?s=612x612&w=0&k=20&c=BIbFwuv7FxTWvh5S3vB6bkT0Qv8Vn8N5Ffseq84ClGI="
-                  } // Add a default image if user doesn't have one
+                  src="https://media.istockphoto.com/id/1337144146/vector/default-avatar-profile-icon-vector.jpg?s=612x612&w=0&k=20&c=BIbFwuv7FxTWvh5S3vB6bkT0Qv8Vn8N5Ffseq84ClGI="
                   alt="User Profile"
                   width={40}
                   height={40}
