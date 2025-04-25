@@ -33,7 +33,6 @@ const LoginForm = () => {
 
     const onSubmit: SubmitHandler<FieldValues> = async (data) => {
         const toastId = toast.loading("Loging in...", { duration: 2000 });
-
         try {
             const res = await loginUser(data);
             if (res?.success) {

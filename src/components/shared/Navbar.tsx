@@ -21,14 +21,14 @@ const Navbar = () => {
   const dispatch = useAppDispatch();
   const pathname = usePathname();
   const router = useRouter();
-  
-  const handleLogout = ()=> {
-    dispatch(logoutUser())
+
+  const handleLogout = () => {
+    dispatch(logoutUser());
     logout();
     if (protectedRoutes.some((route) => pathname.match(route))) {
       router.push("/");
     }
-  }
+  };
 
   return (
     <nav className="bg-white shadow-md">
@@ -74,7 +74,7 @@ const Navbar = () => {
             <IoMdHome /> Home
           </Link>
           <Link
-            href="/find-meals"
+            href="/meals"
             className="hover:text-emerald-500 font-medium flex gap-1 justify-center items-center"
           >
             <IoSearch />
@@ -88,14 +88,15 @@ const Navbar = () => {
             Order Meal
           </Link>
           {!user?.email ? (
-            <Link href="/login"
+            <Link
+              href="/login"
               className="bg-emerald-500 text-white px-4 py-2 rounded hover:bg-emerald-700 font-medium"
             >
               Login
             </Link>
           ) : (
             <Button
-            onClick={()=> handleLogout()}
+              onClick={() => handleLogout()}
               size="lg"
               className="bg-emerald-500 text-white rounded hover:bg-emerald-700 font-medium"
             >
@@ -115,7 +116,7 @@ const Navbar = () => {
             <IoMdHome /> Home
           </Link>
           <Link
-            href="/find-meals"
+            href="/meals"
             className="hover:text-emerald-500 font-medium flex gap-1 justify-start items-center"
           >
             <IoSearch />
@@ -136,7 +137,10 @@ const Navbar = () => {
               Login
             </Link>
           ) : (
-            <Button onClick={()=> handleLogout()}  className="block bg-emerald-500 text-white text-center py-2 font-medium rounded hover:bg-emerald-700">
+            <Button
+              onClick={() => handleLogout()}
+              className="block bg-emerald-500 text-white text-center py-2 font-medium rounded hover:bg-emerald-700"
+            >
               Logout
             </Button>
           )}

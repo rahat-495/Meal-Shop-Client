@@ -1,16 +1,16 @@
 "use client";
 
-import { setSearchState } from "@/redux/featured/find-meals/searchSlice";
-import { useAppDispatch } from "@/redux/hooks";
+import { usePathname, useRouter } from "next/navigation";
 import { useState } from "react";
 
 const SearchBar = () => {
-  const [input, setInput] = useState("");
-  const dispatch = useAppDispatch();
+  const [searchTerm, setSearchTerm] = useState("");
+  const router = useRouter();
+  const pathname = usePathname();
 
   const handleSearch = (e: React.FormEvent) => {
     e.preventDefault();
-    dispatch(setSearchState(input));
+    router.push(`${pathname}?searchTerm=${searchTerm}`);
   };
 
   return (
@@ -22,8 +22,8 @@ const SearchBar = () => {
         type="text"
         placeholder="Search meals..."
         className="flex-1 p-2 border rounded"
-        value={input}
-        onChange={(e) => setInput(e.target.value)}
+        value={searchTerm}
+        onChange={(e) => setSearchTerm(e.target.value)}
       />
       <button
         type="submit"
