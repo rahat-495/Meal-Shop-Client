@@ -56,7 +56,6 @@ const MealsPage = async ({
       </div>
     </div>
   );
-
 };
 
 export default MealsPage;
