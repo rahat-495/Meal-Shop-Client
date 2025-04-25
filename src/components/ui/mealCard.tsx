@@ -16,7 +16,6 @@ export type MealItem = {
 };
 
 const MealCard = ({ mealData }: { mealData: MealItem }) => {
-  console.log(mealData);
   return (
     <div className="max-w-sm w-full bg-white rounded-xl shadow-md overflow-hidden hover:shadow-lg transition-shadow duration-300">
       <Image
