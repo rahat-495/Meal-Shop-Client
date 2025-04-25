@@ -97,7 +97,7 @@ const ManageProductsPage = async () => {
                                         <DropdownMenuContent align="end">
                                             <DropdownMenuItem asChild>
                                                 <Link
-                                                    href={`/admin/update-product/${product._id}`}
+                                                    href={`/dashboard/admin/update-product/${product._id}`}
                                                     className="flex items-center">
                                                     <Pencil className="mr-2 h-4 w-4" />
                                                     Edit

@@ -1,11 +1,11 @@
 "use client";
 import {
     FilePlus,
-    Home,
     ListOrdered,
     Users,
     TruckElectric,
     Kanban,
+    List,
 } from "lucide-react";
 import logoSquare from "@/assets/logos/logo-icon.png";
 
@@ -35,7 +35,7 @@ import { usePathname, useRouter } from "next/navigation";
 const orderItems = [
     {
         title: "Order List",
-        url: "/dashboard/admin/manage-orders",
+        url: "/manage-orders",
         icon: ListOrdered,
     },
 ];
@@ -43,7 +43,7 @@ const orderItems = [
 const userManagementItems = [
     {
         title: "User List",
-        url: "/",
+        url: "/manage-users",
         icon: Users,
     },
 ];
@@ -58,7 +58,7 @@ const productMenuItems = [
     {
         title: "Meal List",
         url: "/manage-products",
-        icon: Home,
+        icon: List,
     },
 ];
 
@@ -150,7 +150,9 @@ export function AppSidebar() {
                                         <SidebarMenuItem key={item.title}>
                                             <SidebarMenuButton asChild>
                                                 <Link
-                                                    href={`/dashboard/user${item?.url}`}>
+                                                    href={"/dashboard/admin".concat(
+                                                        item.url
+                                                    )}>
                                                     <item.icon />
                                                     <span>{item.title}</span>
                                                 </Link>
