@@ -1,4 +1,4 @@
-import { Calendar, Home, Search, Settings } from "lucide-react";
+import { Calendar, FilePlus, Home, ListOrdered, Search, Settings, ShieldPlus, Users } from "lucide-react";
 import logoSquare from "@/assets/logos/logo-icon.png";
 
 import {
@@ -14,13 +14,15 @@ import {
 } from "@/components/ui/sidebar";
 import SectionHeading from "../shared/sectionheading";
 import Image from "next/image";
+import Link from "next/link";
 
-// general items
+
+// order / invoice
 const items = [
     {
-        title: "Home",
+        title: "Order List",
         url: "/",
-        icon: Home,
+        icon: ListOrdered,
     },
     {
         title: "Calendar",
@@ -38,17 +40,40 @@ const items = [
         icon: Settings,
     },
 ];
+// user links
+const userManagementItems = [
+    {
+        title: "User List",
+        url: "/",
+        icon: Users,
+    },
+    {
+        title: "Add Admin",
+        url: "#",
+        icon: ShieldPlus,
+    },
+    {
+        title: "Search",
+        url: "#",
+        icon: Search,
+    },
+    {
+        title: "Settings",
+        url: "#",
+        icon: Settings,
+    },
+];
 
 
 // product group
 const productMenuItems = [
     {
-        title: "Home",
-        url: "/",
-        icon: Home,
+        title: "Add New Menu",
+        url: "/add-product",
+        icon: FilePlus,
     },
     {
-        title: "Home",
+        title: "Menu List",
         url: "/",
         icon: Home,
     },
@@ -58,6 +83,7 @@ export function AppSidebar() {
     return (
         <Sidebar>
             <SidebarHeader>
+                    <Link href='/'>
                 <div className="flex items-center justify-center gap-2 p-2">
                     <Image
                         src={logoSquare}
@@ -67,8 +93,27 @@ export function AppSidebar() {
                     />
                     <SectionHeading title="Meal Moja" className="!mb-0"/>
                 </div>
+                    </Link>
             </SidebarHeader>
             <SidebarContent>
+                {/* Sidebar Group  */}
+                <SidebarGroup>
+                    <SidebarGroupLabel>User Management</SidebarGroupLabel>
+                    <SidebarGroupContent>
+                        <SidebarMenu>
+                            {userManagementItems.map((item) => (
+                                <SidebarMenuItem key={item.title}>
+                                    <SidebarMenuButton asChild>
+                                        <a href={item.url}>
+                                            <item.icon />
+                                            <span>{item.title}</span>
+                                        </a>
+                                    </SidebarMenuButton>
+                                </SidebarMenuItem>
+                            ))}
+                        </SidebarMenu>
+                    </SidebarGroupContent>
+                </SidebarGroup>
                 {/* Sidebar Group  */}
                 <SidebarGroup>
                     <SidebarGroupLabel>Application</SidebarGroupLabel>
@@ -95,10 +140,10 @@ export function AppSidebar() {
                             {productMenuItems.map((item) => (
                                 <SidebarMenuItem key={item.title}>
                                     <SidebarMenuButton asChild>
-                                        <a href={item.url}>
+                                        <Link href={'/dashboard/admin'.concat(item.url)}>
                                             <item.icon />
                                             <span>{item.title}</span>
-                                        </a>
+                                        </Link>
                                     </SidebarMenuButton>
                                 </SidebarMenuItem>
                             ))}
