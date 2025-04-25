@@ -1,16 +1,16 @@
 "use client";
 
-import { setSearchState } from "@/redux/featured/find-meals/searchSlice";
-import { useAppDispatch } from "@/redux/hooks";
+import { usePathname, useRouter } from "next/navigation";
 import { useState } from "react";
 
 const SearchBar = () => {
   const [input, setInput] = useState("");
-  const dispatch = useAppDispatch();
+  const router = useRouter();
+  const pathname = usePathname();
 
   const handleSearch = (e: React.FormEvent) => {
     e.preventDefault();
-    dispatch(setSearchState(input));
+    router.push(`${pathname}?searchTerm=${input}`);
   };
 
   return (
