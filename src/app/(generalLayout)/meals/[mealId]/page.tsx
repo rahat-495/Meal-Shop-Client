@@ -9,7 +9,9 @@ import {
     CardTitle,
 } from "@/components/ui/card";
 import { getProductById } from "@/services/Products";
+import { ArrowLeftCircle } from "lucide-react";
 import Image from "next/image";
+import Link from "next/link";
 
 const MealDetailsPage = async ({
     params,
@@ -20,15 +22,15 @@ const MealDetailsPage = async ({
     const res = await getProductById(mealId);
     const meal = res.data;
 
-    const formattedDate = new Date(meal.createdAt).toLocaleDateString("en-US", {
+    const formattedDate = new Date(meal?.createdAt).toLocaleDateString("en-US", {
         year: "numeric",
         month: "long",
         day: "numeric",
     });
 
     return (
-        <div className="max-w-4xl mx-auto py-8 px-4">
-            <Card className="overflow-hidden">
+        <div className="min-h-screen max-w-4xl mx-auto py-8 px-4">
+            <Card className="overflow-hidden py-0">
                 <div className="md:flex">
                     {/* Image Section */}
                     <div className="md:w-1/2">
@@ -121,6 +123,12 @@ const MealDetailsPage = async ({
                     </div>
                 </div>
             </Card>
+            <Link href="/meals">
+            <Button className="flex items-center my-8">
+                <ArrowLeftCircle/>
+            Return to all meals
+            </Button>
+            </Link>
         </div>
     );
 };
