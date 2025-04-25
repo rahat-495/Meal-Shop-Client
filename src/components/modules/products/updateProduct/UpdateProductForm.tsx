@@ -44,7 +44,6 @@ const UpdateProductForm = () => {
 
     useEffect(() => {
         if (currentProduct) {
-            console.log("Resetting with dietary:", currentProduct.dietary);
             form.reset({
                 ...currentProduct,
                 dietary: currentProduct.dietary,
@@ -55,10 +54,8 @@ const UpdateProductForm = () => {
     if (isLoading) {
         return <LoadingSpinner />;
     }
-    console.log(currentProduct);
 
     const onSubmit: SubmitHandler<FieldValues> = async (data) => {
-        console.log(data);
         const toastId = toast.loading("Submitting menu...", { duration: 2000 });
         const { ingredients, ...menu } = data;
         const ingredientsArray = ingredients.split(", ");
