@@ -24,8 +24,11 @@ import { useAppDispatch } from "@/redux/hooks";
 import { setUser, TUser } from "@/redux/featured/auth/authSlice";
 import { verifyToken } from "@/lib/utils/verifyToken";
 import { useRouter } from "next/navigation";
+import axios from "axios";
 
 const RegisterForm = () => {
+
+    const apiUrl = `https://api.imgbb.com/1/upload?key=${process.env.NEXT_PUBLIC_IMGBB_API_KEY}`;
     const form = useForm({
         resolver: zodResolver(registerSchema),
     });
@@ -42,13 +45,22 @@ const RegisterForm = () => {
         const toastId = toast.loading("Signing Up...", { duration: 2000 });
 
         const formData = new FormData();
-        const { image, ...newData } = data;
+        formData.append("image", data?.image);
 
-        formData.append("data", JSON.stringify(newData));
-        formData.append("file", image);
+        const { data: imageUrl } = await axios.post(apiUrl, formData, {
+        headers: { "content-type": "multipart/form-data" },
+        });
+
+        const registerData = {
+            name: data?.name,
+            email: data?.email,
+            phoneNumber: data?.phoneNumber,
+            password: data?.password,
+            profileImage: imageUrl?.data?.url,
+        }
 
         try {
-            const res = await registerUser(formData).unwrap();
+            const res = await registerUser(registerData).unwrap();
             toast.success("Signup Successful!", { id: toastId });
             const user = verifyToken(res.data.accessToken) as TUser;
             if (res.success) {
