@@ -1,13 +1,11 @@
 "use client";
 import {
-    Calendar,
     FilePlus,
     Home,
     ListOrdered,
-    Search,
-    Settings,
-    ShieldPlus,
     Users,
+    TruckElectric,
+    Kanban,
 } from "lucide-react";
 import logoSquare from "@/assets/logos/logo-icon.png";
 
@@ -27,8 +25,8 @@ import SectionHeading from "../shared/sectionheading";
 import Image from "next/image";
 import Link from "next/link";
 import { Button } from "./button";
-import { useAppDispatch } from "@/redux/hooks";
-import { logoutUser } from "@/redux/featured/auth/authSlice";
+import { useAppDispatch, useAppSelector } from "@/redux/hooks";
+import { logoutUser, selectCurrentUser } from "@/redux/featured/auth/authSlice";
 import { logout } from "@/services/Auth";
 import { protectedRoutes } from "@/constants";
 import { usePathname, useRouter } from "next/navigation";
@@ -40,21 +38,6 @@ const orderItems = [
         url: "/dashboard/admin/manage-orders",
         icon: ListOrdered,
     },
-    {
-        title: "Calendar",
-        url: "#",
-        icon: Calendar,
-    },
-    {
-        title: "Search",
-        url: "#",
-        icon: Search,
-    },
-    {
-        title: "Settings",
-        url: "#",
-        icon: Settings,
-    },
 ];
 // user links
 const userManagementItems = [
@@ -62,11 +45,6 @@ const userManagementItems = [
         title: "User List",
         url: "/",
         icon: Users,
-    },
-    {
-        title: "Add Admin",
-        url: "#",
-        icon: ShieldPlus,
     },
 ];
 
@@ -84,7 +62,23 @@ const productMenuItems = [
     },
 ];
 
+// for user -------
+const orderManagementItems = [
+    {
+        title: "Track Orders",
+        url: "/track-orders",
+        icon: TruckElectric,
+    },
+    {
+        title: "Manage Orders",
+        url: "/manage-orders",
+        icon: Kanban,
+    },
+];
+
 export function AppSidebar() {
+    const user = useAppSelector(selectCurrentUser);
+
     const dispatch = useAppDispatch();
     const router = useRouter();
     const pathname = usePathname();
@@ -117,68 +111,110 @@ export function AppSidebar() {
                     </div>
                 </Link>
             </SidebarHeader>
-            <SidebarContent>
-                {/* Sidebar Group  */}
-                <SidebarGroup>
-                    <SidebarGroupLabel>User Management</SidebarGroupLabel>
-                    <SidebarGroupContent>
-                        <SidebarMenu>
-                            {userManagementItems.map((item) => (
-                                <SidebarMenuItem key={item.title}>
-                                    <SidebarMenuButton asChild>
-                                        <Link
-                                            href={"/dashboard/admin".concat(
-                                                item.url
-                                            )}>
-                                            <item.icon />
-                                            <span>{item.title}</span>
-                                        </Link>
-                                    </SidebarMenuButton>
-                                </SidebarMenuItem>
-                            ))}
-                        </SidebarMenu>
-                    </SidebarGroupContent>
-                </SidebarGroup>
-                {/* Sidebar Group  */}
-                <SidebarGroup>
-                    <SidebarGroupLabel>Application</SidebarGroupLabel>
-                    <SidebarGroupContent>
-                        <SidebarMenu>
-                            {orderItems.map((item) => (
-                                <SidebarMenuItem key={item.title}>
-                                    <SidebarMenuButton asChild>
-                                        <a href={item.url}>
-                                            <item.icon />
-                                            <span>{item.title}</span>
-                                        </a>
-                                    </SidebarMenuButton>
-                                </SidebarMenuItem>
-                            ))}
-                        </SidebarMenu>
-                    </SidebarGroupContent>
-                </SidebarGroup>
-                {/* Product Management  */}
-                <SidebarGroup>
-                    <SidebarGroupLabel>Product Management</SidebarGroupLabel>
-                    <SidebarGroupContent>
-                        <SidebarMenu>
-                            {productMenuItems.map((item) => (
-                                <SidebarMenuItem key={item.title}>
-                                    <SidebarMenuButton asChild>
-                                        <Link
-                                            href={"/dashboard/admin".concat(
-                                                item.url
-                                            )}>
-                                            <item.icon />
-                                            <span>{item.title}</span>
-                                        </Link>
-                                    </SidebarMenuButton>
-                                </SidebarMenuItem>
-                            ))}
-                        </SidebarMenu>
-                    </SidebarGroupContent>
-                </SidebarGroup>
-            </SidebarContent>
+
+            {user?.role === "admin" ? (
+                <>
+                    <SidebarContent>
+                        {/* Sidebar Group  */}
+                        <SidebarGroup>
+                            <SidebarGroupLabel>
+                                User Management
+                            </SidebarGroupLabel>
+                            <SidebarGroupContent>
+                                <SidebarMenu>
+                                    {userManagementItems.map((item) => (
+                                        <SidebarMenuItem key={item.title}>
+                                            <SidebarMenuButton asChild>
+                                                <Link
+                                                    href={"/dashboard/admin".concat(
+                                                        item.url
+                                                    )}>
+                                                    <item.icon />
+                                                    <span>{item.title}</span>
+                                                </Link>
+                                            </SidebarMenuButton>
+                                        </SidebarMenuItem>
+                                    ))}
+                                </SidebarMenu>
+                            </SidebarGroupContent>
+                        </SidebarGroup>
+
+                        {/* Order management admin*/}
+                        <SidebarGroup>
+                            <SidebarGroupLabel>
+                                Order Management
+                            </SidebarGroupLabel>
+                            <SidebarGroupContent>
+                                <SidebarMenu>
+                                    {orderItems.map((item) => (
+                                        <SidebarMenuItem key={item.title}>
+                                            <SidebarMenuButton asChild>
+                                                <Link
+                                                    href={`/dashboard/user${item?.url}`}>
+                                                    <item.icon />
+                                                    <span>{item.title}</span>
+                                                </Link>
+                                            </SidebarMenuButton>
+                                        </SidebarMenuItem>
+                                    ))}
+                                </SidebarMenu>
+                            </SidebarGroupContent>
+                        </SidebarGroup>
+
+                        {/* Product Management  */}
+                        <SidebarGroup>
+                            <SidebarGroupLabel>
+                                Product Management
+                            </SidebarGroupLabel>
+                            <SidebarGroupContent>
+                                <SidebarMenu>
+                                    {productMenuItems.map((item) => (
+                                        <SidebarMenuItem key={item.title}>
+                                            <SidebarMenuButton asChild>
+                                                <Link
+                                                    href={"/dashboard/admin".concat(
+                                                        item.url
+                                                    )}>
+                                                    <item.icon />
+                                                    <span>{item.title}</span>
+                                                </Link>
+                                            </SidebarMenuButton>
+                                        </SidebarMenuItem>
+                                    ))}
+                                </SidebarMenu>
+                            </SidebarGroupContent>
+                        </SidebarGroup>
+                    </SidebarContent>{" "}
+                </>
+            ) : (
+                <>
+                    <SidebarContent>
+                        {/* Order management User*/}
+                        <SidebarGroup>
+                            <SidebarGroupLabel>
+                                Order Management
+                            </SidebarGroupLabel>
+                            <SidebarGroupContent>
+                                <SidebarMenu>
+                                    {orderManagementItems.map((item) => (
+                                        <SidebarMenuItem key={item.title}>
+                                            <SidebarMenuButton asChild>
+                                                <Link
+                                                    href={`/dashboard/user${item?.url}`}>
+                                                    <item.icon />
+                                                    <span>{item.title}</span>
+                                                </Link>
+                                            </SidebarMenuButton>
+                                        </SidebarMenuItem>
+                                    ))}
+                                </SidebarMenu>
+                            </SidebarGroupContent>
+                        </SidebarGroup>
+                    </SidebarContent>
+                </>
+            )}
+
+            {/* sidebar footer  */}
             <SidebarFooter>
                 <Button
                     className="bg-emerald-500"

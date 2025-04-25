@@ -1,10 +1,16 @@
+
+"use client";
 import Image from "next/image";
 import Link from "next/link";
 import { ArrowRight, HeartPulse, Leaf, Utensils, Wallet } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import mealInBox from "@/assets/meal-banner.jpg";
+import { useGetMyDietaryPreferenceQuery } from "@/redux/featured/dietary-preferences/dietaryPreferenceApi";
 
 const Banner = () => {
+
+    const {data} = useGetMyDietaryPreferenceQuery(undefined) ;
+
     return (
         <section className="py-24 md:py-32 bg-emerald-500">
             <div className="container max-w-6xl mx-auto">
@@ -23,16 +29,19 @@ const Banner = () => {
                             <Button asChild className="w-full sm:w-auto">
                                 <Link href="/meals">Explore Meals</Link>
                             </Button>
-                            <Button
-                                asChild
-                                variant="outline"
-                                className="w-full sm:w-auto"
-                            >
-                                <Link href="/preferences">
-                                    Set Preferences{" "}
-                                    <ArrowRight className="ml-2 size-4" />
-                                </Link>
-                            </Button>
+                            {
+                                data?.success|| 
+                                <Button
+                                    asChild
+                                    variant="outline"
+                                    className="w-full sm:w-auto"
+                                >
+                                    <Link href="/preferences">
+                                        Set Preferences{" "}
+                                        <ArrowRight className="ml-2 size-4" />
+                                    </Link>
+                                </Button>
+                            }
                         </div>
                     </div>
 

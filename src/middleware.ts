@@ -42,7 +42,7 @@ export const middleware = async (request: NextRequest) => {
 export const config = {
     matcher: [
         "/login",
-        "/dashboard", // skiped since 404 for now
+        "/dashboard", 
         "/dashboard/:page",
         "/dashboard/:page/:page"
     ],

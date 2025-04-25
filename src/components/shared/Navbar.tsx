@@ -17,6 +17,7 @@ import { usePathname, useRouter } from "next/navigation";
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
+  const [isDropdownOpen, setIsDropdownOpen] = useState(false); // For the user image dropdown
   const user = useAppSelector(selectCurrentUser);
   const dispatch = useAppDispatch();
   const pathname = usePathname();
@@ -28,6 +29,10 @@ const Navbar = () => {
     if (protectedRoutes.some((route) => pathname.match(route))) {
       router.push("/");
     }
+  };
+
+  const toggleDropdown = () => {
+    setIsDropdownOpen(!isDropdownOpen);
   };
 
   return (
@@ -65,7 +70,7 @@ const Navbar = () => {
           </svg>
         </button>
 
-        {/* Links + Login (Desktop) */}
+        {/* Links + User Image Dropdown (Desktop) */}
         <div className="hidden md:flex items-center space-x-6">
           <Link
             href="/"
@@ -87,21 +92,60 @@ const Navbar = () => {
             <ImSpoonKnife />
             Order Meal
           </Link>
-          {!user?.email ? (
+
+          {/* User Dropdown */}
+          {user?.email ? (
+            <div className="relative">
+              <button
+                onClick={toggleDropdown}
+                className="flex items-center gap-2"
+              >
+                <Image
+                  src="https://media.istockphoto.com/id/1337144146/vector/default-avatar-profile-icon-vector.jpg?s=612x612&w=0&k=20&c=BIbFwuv7FxTWvh5S3vB6bkT0Qv8Vn8N5Ffseq84ClGI="
+                  alt="User Profile"
+                  width={40}
+                  height={40}
+                  className="rounded-full"
+                />
+              </button>
+              {isDropdownOpen && (
+                <div className="absolute right-0 mt-2 w-48 bg-white shadow-lg rounded-lg border border-gray-200">
+                  <Link
+                    href={
+                      user?.role === "admin"
+                        ? "/dashboard/admin/profile"
+                        : "/dashboard/user/profile"
+                    }
+                    className="block font-medium px-4 py-2 text-gray-800 hover:bg-emerald-100"
+                  >
+                    Profile
+                  </Link>
+                  <Link
+                    href={
+                      user?.role === "admin"
+                        ? "/dashboard/admin"
+                        : "/dashboard/user"
+                    }
+                    className="block font-medium px-4 py-2 text-gray-800 hover:bg-emerald-100"
+                  >
+                    Dashboard
+                  </Link>
+                  <button
+                    onClick={handleLogout}
+                    className="block w-full font-medium px-4 py-2 text-gray-800 hover:bg-emerald-100 text-left"
+                  >
+                    Logout
+                  </button>
+                </div>
+              )}
+            </div>
+          ) : (
             <Link
               href="/login"
               className="bg-emerald-500 text-white px-4 py-2 rounded hover:bg-emerald-700 font-medium"
             >
               Login
             </Link>
-          ) : (
-            <Button
-              onClick={() => handleLogout()}
-              size="lg"
-              className="bg-emerald-500 text-white rounded hover:bg-emerald-700 font-medium"
-            >
-              Logout
-            </Button>
           )}
         </div>
       </div>
