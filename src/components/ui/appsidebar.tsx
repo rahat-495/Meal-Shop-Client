@@ -54,17 +54,7 @@ const userManagementItems = [
         title: "Add Admin",
         url: "#",
         icon: ShieldPlus,
-    },
-    {
-        title: "Search",
-        url: "#",
-        icon: Search,
-    },
-    {
-        title: "Settings",
-        url: "#",
-        icon: Settings,
-    },
+    }
 ];
 
 
@@ -77,7 +67,7 @@ const productMenuItems = [
     },
     {
         title: "Meal List",
-        url: "/",
+        url: "/manage-products",
         icon: Home,
     },
 ]
