@@ -8,6 +8,7 @@ const GeneralLayout = ({ children }: { children: ReactNode }) => {
       <Navbar></Navbar>
       <div className="min-h-screen">{children}</div>
       <FooterSection></FooterSection>
+      <div></div>
     </div>
   );
 };
