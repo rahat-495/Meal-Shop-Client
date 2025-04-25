@@ -3,6 +3,7 @@ import { Ubuntu, Noto_Sans, Noto_Sans_Mono } from "next/font/google";
 import "./globals.css";
 import Providers from "@/lib/providers";
 import { Toaster } from "sonner";
+import Navbar from "@/components/shared/Navbar";
 
 const ubuntu = Ubuntu({
     variable: "--font-ubuntu",
@@ -22,7 +23,8 @@ const notoMono = Noto_Sans_Mono({
 
 export const metadata: Metadata = {
     title: "Meal Moja - Homepage",
-    description: "Meal Moja is your personalized meal planning and delivery solution. Choose meals based on your taste and schedule, and enjoy fresh, chef-prepared dishes delivered to your door.",
+    description:
+        "Meal Moja is your personalized meal planning and delivery solution. Choose meals based on your taste and schedule, and enjoy fresh, chef-prepared dishes delivered to your door.",
 };
 
 export default function RootLayout({
@@ -33,9 +35,11 @@ export default function RootLayout({
     return (
         <html lang="en">
             <body
-                className={`${ubuntu.variable} ${notoSans.variable} ${notoMono.variable} antialiased`}
-            >
-                <Providers>{children}</Providers>
+                className={`${ubuntu.variable} ${notoSans.variable} ${notoMono.variable} antialiased`}>
+                <Providers>
+                    <Navbar />
+                    {children}
+                </Providers>
                 <Toaster />
             </body>
         </html>
