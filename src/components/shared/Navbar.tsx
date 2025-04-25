@@ -116,7 +116,7 @@ const Navbar = () => {
             <IoMdHome /> Home
           </Link>
           <Link
-            href="/find-meals"
+            href="/meals"
             className="hover:text-emerald-500 font-medium flex gap-1 justify-start items-center"
           >
             <IoSearch />

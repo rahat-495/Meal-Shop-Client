@@ -3,9 +3,9 @@ import ProductCard from "@/components/modules/products/productCard/ProductCard";
 import Pagination from "@/components/shared/pagination";
 import SectionHeading from "@/components/shared/sectionheading";
 import { getAllProducts } from "@/services/Products";
-import { TMeal } from "@/types";
 import Image from "next/image";
 import websiteLogo from "@/assets/logos/Meal Moja Logo Teal Transparen.png";
+import { TMeal } from "@/types";
 
 const MealsPage = async ({
   searchParams,
@@ -56,6 +56,7 @@ const MealsPage = async ({
       </div>
     </div>
   );
+
 };
 
 export default MealsPage;
