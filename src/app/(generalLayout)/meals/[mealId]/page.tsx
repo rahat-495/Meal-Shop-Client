@@ -21,6 +21,7 @@ const MealDetailsPage = async ({
     const { mealId } = await params;
     const res = await getProductById(mealId);
     const meal = res.data;
+    console.log(res);
 
     const formattedDate = new Date(meal?.createdAt).toLocaleDateString("en-US", {
         year: "numeric",

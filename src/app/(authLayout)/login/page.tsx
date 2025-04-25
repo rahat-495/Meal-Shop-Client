@@ -4,7 +4,7 @@ import loginImg from '@/assets/auth/login-user.svg';
 
 const LoginPage = () => {
     return (
-        <div className="max-w-6xl mx-auto min-h-screen flex items-center justify-around gap-5 bg-gray-50 p-3">
+        <div className="max-w-6xl mx-auto min-h-screen flex items-center justify-around gap-5 p-3">
             <div className="hidden md:block self-center md:basis-1/2 shrink-0 justify-items-center">
                 <Image
                     src={loginImg}

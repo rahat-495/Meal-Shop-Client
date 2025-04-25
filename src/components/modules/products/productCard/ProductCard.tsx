@@ -34,7 +34,7 @@ const ProductCard = ({ product }: { product: TMeal }) => {
             alt={product.title}
             height={180}
             width={320}
-            className="rounded-lg w-full aspect-video"
+            className="rounded-lg w-full object-cover aspect-video"
           />
           <CardTitle className="font-ubuntu text-xl mt-3">
             {product.title}

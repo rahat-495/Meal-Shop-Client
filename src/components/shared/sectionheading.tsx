@@ -1,9 +1,11 @@
 type SectionHeadingProps = {
     title: string;
     subtitle?: string;
+    className?: string;
+    size?: string;
 };
 
-const SectionHeading = ({ title, subtitle }: SectionHeadingProps) => {
+const SectionHeading = ({ title, subtitle, className, size }: SectionHeadingProps) => {
     const words = title.trim().split(/\s+/);
     const mid = Math.floor(words.length / 2);
 
@@ -11,8 +13,8 @@ const SectionHeading = ({ title, subtitle }: SectionHeadingProps) => {
     const secondHalf = words.slice(mid);
 
     return (
-        <div className="text-center mb-8">
-            <h2 className="text-3xl font-bold font-[Ubuntu]">
+        <div className={`text-center mb-8 ${className}`}>
+            <h2 className={`text-3xl font-bold font-[Ubuntu] ${size && "text-".concat(size)}`}>
                 <span className="text-emerald-500">{firstHalf.join(" ")}</span>{" "}
                 <span className="text-black">{secondHalf.join(" ")}</span>
             </h2>
