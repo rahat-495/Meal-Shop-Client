@@ -6,16 +6,20 @@ import { TMeal } from "@/types";
 const MealsPage = async ({
     searchParams,
 }: {
-    searchParams: Promise<{ page: string }>;
+    searchParams: Promise<{ page?: string, limit?:string }>;
 }) => {
-    const { page } = await searchParams;
+    // const { page } = await searchParams;
+    const query = await searchParams;
     // Get all meals
-    const res = await getAllProducts(page);
+    const res = await getAllProducts(query?.page,query?.limit,query);
 
     const products: TMeal[] = res?.data?.result;
 
     return (
         <div className="grid md:grid-cols-2 lg:grid-cols-3 my-10 gap-5 md:max-w-3xl lg:max-w-6xl mx-auto place-items-center px-4">
+            {/* <div className="col-span-full">
+                Filter
+            </div> */}
             {products?.map((product: TMeal) => (
                 <ProductCard key={product._id} product={product} />
             ))}
