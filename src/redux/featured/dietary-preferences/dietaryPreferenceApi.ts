@@ -10,8 +10,21 @@ const dietaryPreferenceApi = baseApi.injectEndpoints({
                 body: data
             })
         }),
+        updateDietaryPreference: builder.mutation({
+            query: (data) => ({
+                url: "/preferences/update-dietary-preference",
+                method: "PATCH",
+                body: data
+            })
+        }),
+        getMyDietaryPreference: builder.query({
+            query: () => ({
+                url: "/preferences/my-dietary-preferences",
+                method: "GET",
+            })
+        }),
     })
 })
 
 
-export const {useCreateDietaryPreferenceMutation} = dietaryPreferenceApi;
+export const {useCreateDietaryPreferenceMutation , useGetMyDietaryPreferenceQuery , useUpdateDietaryPreferenceMutation} = dietaryPreferenceApi;
