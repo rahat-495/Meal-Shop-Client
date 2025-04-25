@@ -1,4 +1,5 @@
-const AuthLayout = ({ children }) => {
+
+const AuthLayout = ({ children }: {children: React.ReactNode}) => {
   return (
     <div>
       <h1>Auth layout</h1>

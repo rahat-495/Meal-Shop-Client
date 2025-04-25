@@ -29,7 +29,7 @@ const authSlice = createSlice({
             state.user = user;
             state.token = token;
         },
-        logout: (state) => {
+        logoutUser: (state) => {
             state.user = null;
             state.token = null
         }
@@ -37,7 +37,7 @@ const authSlice = createSlice({
 })
 
 // Exporting actions
-export const { setUser, logout } = authSlice.actions;
+export const { setUser, logoutUser } = authSlice.actions;
 
 // Export Selector
 export const selectCurrentToken = (state: RootState) => state.combinedPersist.auth.token;

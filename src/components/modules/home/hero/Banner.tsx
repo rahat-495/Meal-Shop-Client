@@ -10,7 +10,7 @@ const Banner = () => {
             <div className="container max-w-6xl mx-auto">
                 <div className="grid items-center gap-10 lg:grid-cols-2">
                     {/* Text Content */}
-                    <div className="flex flex-col items-center text-center lg:items-start lg:text-left">
+                    <div className="flex flex-col items-center text-center lg:items-start lg:text-left px-4">
                         <h1 className="my-6 text-4xl font-bold text-pretty font-ubuntu lg:text-6xl">
                             Plan Meals Effortlessly
                         </h1>
@@ -19,7 +19,7 @@ const Banner = () => {
                             preferences, and get food delivered to your doorstep
                             with just a few clicks.
                         </p>
-                        <div className="flex w-full flex-col justify-center gap-2 sm:flex-row lg:justify-start">
+                        <div className="flex w-full flex-col justify-center gap-2 sm:flex-row lg:justify-start px-6">
                             <Button asChild className="w-full sm:w-auto">
                                 <Link href="/meals">Explore Meals</Link>
                             </Button>
@@ -37,7 +37,7 @@ const Banner = () => {
                     </div>
 
                     {/* Image */}
-                    <div className="w-full h-96 border-4 border-white rounded-lg relative">
+                    <div className="h-96 border-4 border-white rounded-lg relative mx-5">
                         <Image
                             src={mealInBox}
                             alt="Delicious meals arranged in boxes"
