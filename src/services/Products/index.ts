@@ -23,6 +23,7 @@ export const getAllProducts = async (
   } catch (error: any) {
     return Error(error.message);
   }
+
 };
 
 // get all products

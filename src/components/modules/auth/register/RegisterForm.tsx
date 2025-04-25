@@ -163,7 +163,7 @@ const RegisterForm = () => {
                                 <Button
                                     type="button"
                                     variant="link"
-                                    className="absolute cursor-pointer right-0 top-1 translate-y-1/2"
+                                    className="absolute right-0 top-1 translate-y-1/2"
                                     onClick={() => setIsHidden(!isHidden)}
                                 >
                                     {isHidden ? <EyeOff /> : <Eye />}
@@ -192,7 +192,7 @@ const RegisterForm = () => {
                                 <Button
                                     type="button"
                                     variant="link"
-                                    className="absolute cursor-pointer right-0 top-1 translate-y-1/2"
+                                    className="absolute right-0 top-1 translate-y-1/2"
                                     onClick={() =>
                                         setIsHiddenConfirm(!isHiddenConfirm)
                                     }
