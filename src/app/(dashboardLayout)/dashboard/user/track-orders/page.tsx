@@ -30,26 +30,26 @@ const TrackOrdersPage = () => {
                         {data?.data?.map((order : TOrder, index : number) => (
                             <tr key={order._id} className="hover:bg-gray-50">
                                 <td className="px-4 py-2 border">{index + 1}</td>
-                                <td className="px-4 py-2 border">{order.id.title}</td>
+                                <td className="px-4 py-2 border">{order?.id?.title}</td>
                                 <td className="px-4 py-2 border">
                                     <Image
-                                        src={order.id.image}
-                                        alt={order.id.title}
-                                        width={64}
-                                        height={64}
-                                        className="w-16 h-16 object-cover rounded"
+                                        src={order?.id?.image}
+                                        alt={order?.id?.title}
+                                        width={32}
+                                        height={32}
+                                        className="object-cover rounded"
                                     />
                                 </td>
-                                <td className="px-4 py-2 border">{order.quantity}</td>
-                                <td className="px-4 py-2 border">${order.id.price.toFixed(2)}</td>
-                                <td className="px-4 py-2 border">${order.totalPrice.toFixed(2)}</td>
-                                <td className="px-4 py-2 border font-semibold">Status : {order.status} {order?.status === "Paid" || order?.status === "Pending" ? "Soon will shipped" : ""}</td>
+                                <td className="px-4 py-2 border">{order?.quantity}</td>
+                                <td className="px-4 py-2 border">${order?.id?.price.toFixed(2)}</td>
+                                <td className="px-4 py-2 border">${order?.totalPrice?.toFixed(2)}</td>
+                                <td className="px-4 py-2 border font-semibold">Status : {order?.status} {order?.status === "Paid" || order?.status === "Pending" ? "Soon will shipped" : ""}</td>
                                 <td className="px-4 py-2 border">
-                                    <p>ID: {order.transaction.id}</p>
-                                    <p>Status: {order.transaction.transactionStatus}</p>
+                                    <p>ID: {order?.transaction?.id}</p>
+                                    <p>Status: {order?.transaction?.transactionStatus}</p>
                                 </td>
                                 <td className="px-4 py-2 border">
-                                    {new Date(order.createdAt).toLocaleDateString()}
+                                    {new Date(order?.createdAt).toLocaleDateString()}
                                 </td>
                             </tr>
                         ))}

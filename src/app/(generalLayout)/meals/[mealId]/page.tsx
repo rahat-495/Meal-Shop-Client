@@ -1,3 +1,4 @@
+import OrderPlaceBtn from "@/components/modules/meals/OrderPlaceBtn";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import {
@@ -21,7 +22,6 @@ const MealDetailsPage = async ({
     const { mealId } = await params;
     const res = await getProductById(mealId);
     const meal = res.data;
-    console.log(res);
 
     const formattedDate = new Date(meal?.createdAt).toLocaleDateString("en-US", {
         year: "numeric",
@@ -105,17 +105,7 @@ const MealDetailsPage = async ({
                                 </ul>
                             </div>
 
-                            <div className="flex justify-between items-center pt-4">
-                                <div>
-                                    <span className="text-2xl font-bold">
-                                        ${meal.price.toFixed(2)}
-                                    </span>
-                                    <span className="text-sm text-muted-foreground ml-1">
-                                        / serving
-                                    </span>
-                                </div>
-                                <Button size="lg">Add to Cart</Button>
-                            </div>
+                            <OrderPlaceBtn meal={meal}/>
                         </CardContent>
 
                         <CardFooter className="p-0 pt-6 text-xs text-muted-foreground">
