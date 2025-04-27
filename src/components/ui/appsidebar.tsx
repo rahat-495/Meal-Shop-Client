@@ -1,5 +1,5 @@
 "use client"
-import { Calendar, FilePlus, Home, ListOrdered, Search, Settings, ShieldPlus, Users , TruckElectric , Kanban } from "lucide-react";
+import { FilePlus, Home, ListOrdered, TruckElectric , Kanban ,User , Pen , MenuIcon } from "lucide-react";
 import logoSquare from "@/assets/logos/logo-icon.png";
 
 import {
@@ -18,45 +18,20 @@ import SectionHeading from "../shared/sectionheading";
 import Image from "next/image";
 import Link from "next/link";
 import { Button } from "./button";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "@/redux/store";
+import { logoutUser } from "@/redux/featured/auth/authSlice";
+import { useRouter } from "next/navigation";
+import { logout } from "@/services/Auth";
 
 
 // order / invoice
 const items = [
     {
         title: "Order List",
-        url: "/",
+        url: "/orders",
         icon: ListOrdered,
     },
-    {
-        title: "Calendar",
-        url: "#",
-        icon: Calendar,
-    },
-    {
-        title: "Search",
-        url: "#",
-        icon: Search,
-    },
-    {
-        title: "Settings",
-        url: "#",
-        icon: Settings,
-    },
-];
-// user links
-const userManagementItems = [
-    {
-        title: "User List",
-        url: "/",
-        icon: Users,
-    },
-    {
-        title: "Add Admin",
-        url: "#",
-        icon: ShieldPlus,
-    }
 ];
 
 // product group
@@ -71,6 +46,16 @@ const productMenuItems = [
         url: "/manage-products",
         icon: Home,
     },
+    {
+        title: "All Meal Preference",
+        url: "/all-meal-preference",
+        icon: MenuIcon,
+    },
+    {
+        title: "Profile",
+        url: "/",
+        icon: User,
+    }
 ]
 
 // for user -------
@@ -87,12 +72,34 @@ const orderManagementItems = [
     }
 ];
 
+const mealPreference = [
+    {
+        title: "Create Meal Preference",
+        url: "/create-meal-preference",
+        icon: Pen,
+    },
+    {
+        title: "All Meal Preference",
+        url: "/all-meal-preference",
+        icon: MenuIcon,
+    },
+    {
+        title: "Profile",
+        url: "/",
+        icon: User,
+    },
+]
+
 export function AppSidebar() {
     
+    const router = useRouter() ;
     const user = useSelector((state : RootState) => state.combinedPersist.auth.user) ;
+    const dispatch = useDispatch() ;
 
     const handleLogout  = ()=>{
-        console.log("handle Logout");
+        dispatch(logoutUser()) ;
+        logout() ;
+        router.push('/login') ;
     }
 
     return (
@@ -121,35 +128,16 @@ export function AppSidebar() {
 
                     {/* Sidebar Group  */}
                     <SidebarGroup>
-                        <SidebarGroupLabel>User Management</SidebarGroupLabel>
-                        <SidebarGroupContent>
-                            <SidebarMenu>
-                                {userManagementItems.map((item) => (
-                                    <SidebarMenuItem key={item.title}>
-                                        <SidebarMenuButton asChild>
-                                        <Link href={'/dashboard/admin'.concat(item.url)}>
-                                                <item.icon />
-                                                <span>{item.title}</span>
-                                            </Link>
-                                        </SidebarMenuButton>
-                                    </SidebarMenuItem>
-                                ))}
-                            </SidebarMenu>
-                        </SidebarGroupContent>
-                    </SidebarGroup>
-
-                    {/* Sidebar Group  */}
-                    <SidebarGroup>
                         <SidebarGroupLabel>Application</SidebarGroupLabel>
                         <SidebarGroupContent>
                             <SidebarMenu>
                                 {items.map((item) => (
                                     <SidebarMenuItem key={item.title}>
                                         <SidebarMenuButton asChild>
-                                            <a href={item.url}>
+                                            <Link href={`/dashboard/admin${item.url}`}>
                                                 <item.icon />
                                                 <span>{item.title}</span>
-                                            </a>
+                                            </Link>
                                         </SidebarMenuButton>
                                     </SidebarMenuItem>
                                 ))}
@@ -176,7 +164,8 @@ export function AppSidebar() {
                         </SidebarGroupContent>
                     </SidebarGroup>
 
-                </SidebarContent> : 
+                </SidebarContent> 
+                : 
                 <SidebarContent>
 
                     {/* Sidebar Group  */}
@@ -200,32 +189,13 @@ export function AppSidebar() {
 
                     {/* Sidebar Group  */}
                     <SidebarGroup>
-                        <SidebarGroupLabel>Application</SidebarGroupLabel>
+                        <SidebarGroupLabel>Manage Meal Preferences</SidebarGroupLabel>
                         <SidebarGroupContent>
                             <SidebarMenu>
-                                {items.map((item) => (
+                                {mealPreference.map((item) => (
                                     <SidebarMenuItem key={item.title}>
                                         <SidebarMenuButton asChild>
-                                            <a href={item.url}>
-                                                <item.icon />
-                                                <span>{item.title}</span>
-                                            </a>
-                                        </SidebarMenuButton>
-                                    </SidebarMenuItem>
-                                ))}
-                            </SidebarMenu>
-                        </SidebarGroupContent>
-                    </SidebarGroup>
-
-                    {/* Product Management  */}
-                    <SidebarGroup>
-                        <SidebarGroupLabel>Product Management</SidebarGroupLabel>
-                        <SidebarGroupContent>
-                            <SidebarMenu>
-                                {productMenuItems.map((item) => (
-                                    <SidebarMenuItem key={item.title}>
-                                        <SidebarMenuButton asChild>
-                                        <Link href={'/dashboard/admin'.concat(item.url)}>
+                                            <Link href={`/dashboard/user${item.url}`}>
                                                 <item.icon />
                                                 <span>{item.title}</span>
                                             </Link>

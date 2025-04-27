@@ -1,11 +1,10 @@
 
-"use client";
-import { Button } from "@/components/ui/button";
+"use client"
 import { useGetMyDataQuery } from "@/redux/featured/users/usersApi";
 import Image from "next/image";
-import Link from "next/link";
 
-const UserDashboardPage = () => {
+const UserProfilePage = () => {
+    
     const {data} = useGetMyDataQuery(undefined) ;
 
   return (
@@ -46,7 +45,6 @@ const UserDashboardPage = () => {
                 {data?.data?.isblocked ? "Blocked" : "Active"}
                 </p>
             </div>
-            <Link href={`/dashboard/user/update-preference`} className=""><Button>Update Preference</Button></Link>
           </div>
         </div>
       </div>
@@ -54,4 +52,4 @@ const UserDashboardPage = () => {
   );
 };
 
-export default UserDashboardPage;
+export default UserProfilePage;
