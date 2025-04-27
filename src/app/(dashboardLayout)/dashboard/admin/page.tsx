@@ -5,7 +5,7 @@ import { useGetMyDataQuery } from "@/redux/featured/users/usersApi";
 import Image from "next/image";
 import Link from "next/link";
 
-const UserDashboardPage = () => {
+const AdminDashboardPage = () => {
     const {data} = useGetMyDataQuery(undefined) ;
 
   return (
@@ -54,4 +54,4 @@ const UserDashboardPage = () => {
   );
 };
 
-export default UserDashboardPage;
+export default AdminDashboardPage;
